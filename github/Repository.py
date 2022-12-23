@@ -1213,6 +1213,9 @@ class Repository(github.GithubObject.CompletableGithubObject):
         milestone=github.GithubObject.NotSet,
         labels=github.GithubObject.NotSet,
         assignees=github.GithubObject.NotSet,
+        user=github.GithubObject.NotSet,
+        created_at=github.GithubObject.NotSet,
+        closed_at=github.GithubObject.NotSet,
     ):
         """
         :calls: `POST /repos/{owner}/{repo}/issues <https://docs.github.com/en/rest/reference/issues>`_
@@ -1267,6 +1270,12 @@ class Repository(github.GithubObject.CompletableGithubObject):
                 element.name if isinstance(element, github.Label.Label) else element
                 for element in labels
             ]
+        if user is not github.GithubObject.NotSet:
+            post_parameters["user"] = user
+        if created_at is not github.GithubObject.NotSet:
+            post_parameters["created_at"] = created_at.strftime("%Y-%m-%dT%H:%M:%SZ")
+        if closed_at is not github.GithubObject.NotSet:
+            post_parameters["closed_at"] = closed_at.strftime("%Y-%m-%dT%H:%M:%SZ")
         headers, data = self._requester.requestJsonAndCheck(
             "POST", f"{self.url}/issues", input=post_parameters
         )
