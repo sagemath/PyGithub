@@ -205,7 +205,8 @@ class Milestone(github.GithubObject.CompletableGithubObject):
 
     @property
     def _identity(self):
-        return self.number
+        # https://github.github.com/enterprise-migrations/#/./2.1-export-archive-format?id=milestone
+        return self.url
 
     def _initAttributes(self):
         self._closed_issues = github.GithubObject.NotSet
