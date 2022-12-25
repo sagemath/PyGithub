@@ -351,6 +351,33 @@ class Issue(github.GithubObject.CompletableGithubObject):
             self._requester, headers, data, completed=True
         )
 
+    def create_event(
+        self,
+        event,
+        actor=github.GithubObject.NotSet,
+        created_at=github.GithubObject.NotSet,
+        **kwds
+    ):
+        """
+        https://docs.github.com/en/developers/webhooks-and-events/events/issue-event-types
+        """
+        post_parameters = {
+            "event": event,
+        }
+        if actor is not github.GithubObject.NotSet:
+            post_parameters["actor"] = actor
+        if created_at is not github.GithubObject.NotSet:
+            post_parameters["created_at"] = created_at.strftime("%Y-%m-%dT%H:%M:%SZ")
+        for key, value in kwds.items():
+            if value is not github.GithubObject.NotSet:
+                post_parameters[key] = value
+        headers, data = self._requester.requestJsonAndCheck(
+            "POST", f"{self.url}/events", input=post_parameters
+        )
+        return github.IssueEvent.IssueEvent(
+            self._requester, headers, data, completed=True
+        )
+
     def delete_labels(self):
         """
         :calls: `DELETE /repos/{owner}/{repo}/issues/{number}/labels <https://docs.github.com/en/rest/reference/issues#labels>`_
