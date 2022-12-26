@@ -357,6 +357,7 @@ class Issue(github.GithubObject.CompletableGithubObject):
         actor=github.GithubObject.NotSet,
         created_at=github.GithubObject.NotSet,
         milestone=github.GithubObject.NotSet,
+        label=github.GithubObject.NotSet,
         **kwds
     ):
         """
@@ -371,6 +372,10 @@ class Issue(github.GithubObject.CompletableGithubObject):
             post_parameters["created_at"] = created_at.strftime("%Y-%m-%dT%H:%M:%SZ")
         if isinstance(milestone, github.Milestone.Milestone):
             post_parameters["milestone"] = milestone.title
+        if isinstance(label, github.Label.Label):
+            post_parameters["label"] = label.name
+        elif label is not github.GithubObject.NotSet:
+            post_parameters["label"] = label
         for key, value in kwds.items():
             if value is not github.GithubObject.NotSet:
                 post_parameters[key] = value
