@@ -322,6 +322,31 @@ class Issue(github.GithubObject.CompletableGithubObject):
             "POST", f"{self.url}/labels", input=post_parameters
         )
 
+    def create_attachment(
+        self,
+        asset_name,
+        asset_content_type,
+        asset_url,
+        user=github.GithubObject.NotSet,
+        created_at=github.GithubObject.NotSet,
+    ):
+        post_parameters = {
+            "asset_name": asset_name,
+            "asset_content_type": asset_content_type,
+            "asset_url": asset_url,
+        }
+        if user is not github.GithubObject.NotSet:
+            post_parameters["user"] = user
+        if created_at is not github.GithubObject.NotSet:
+            post_parameters["created_at"] = created_at.strftime("%Y-%m-%dT%H:%M:%SZ")
+        headers, data = self._requester.requestJsonAndCheck(
+            "POST", f"{self.url}/attachments", input=post_parameters
+        )
+        from github.Attachment import Attachment
+        return Attachment(
+            self._requester, headers, data, completed=True
+        )
+
     def create_comment(
         self,
         body,
