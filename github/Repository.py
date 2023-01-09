@@ -1340,6 +1340,7 @@ class Repository(github.GithubObject.CompletableGithubObject):
         state=github.GithubObject.NotSet,
         description=github.GithubObject.NotSet,
         due_on=github.GithubObject.NotSet,
+        user=github.GithubObject.NotSet,
     ):
         """
         :calls: `POST /repos/{owner}/{repo}/milestones <https://docs.github.com/en/rest/reference/issues#milestones>`_
@@ -1369,6 +1370,8 @@ class Repository(github.GithubObject.CompletableGithubObject):
                 post_parameters["due_on"] = due_on.strftime("%Y-%m-%dT%H:%M:%SZ")
             else:
                 post_parameters["due_on"] = due_on.isoformat()
+        if user is not github.GithubObject.NotSet:
+            post_parameters["user"] = user
         headers, data = self._requester.requestJsonAndCheck(
             "POST", f"{self.url}/milestones", input=post_parameters
         )
