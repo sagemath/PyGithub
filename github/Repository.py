@@ -1270,7 +1270,7 @@ class Repository(github.GithubObject.CompletableGithubObject):
             post_parameters["milestone"] = milestone._identity
         if labels is not github.GithubObject.NotSet:
             post_parameters["labels"] = [
-                element.name if isinstance(element, github.Label.Label) else element
+                element.url if isinstance(element, github.Label.Label) else element
                 for element in labels
             ]
         if user is not github.GithubObject.NotSet:
