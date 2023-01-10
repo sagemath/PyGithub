@@ -1313,7 +1313,7 @@ class Repository(github.GithubObject.CompletableGithubObject):
             self._requester, headers, data, completed=True
         )
 
-    def create_label(self, name, color, description=github.GithubObject.NotSet):
+    def create_label(self, name, color, description=github.GithubObject.NotSet, text_color="ffffff"):
         """
         :calls: `POST /repos/{owner}/{repo}/labels <https://docs.github.com/en/rest/reference/issues#labels>`_
         :param name: string
@@ -1329,6 +1329,7 @@ class Repository(github.GithubObject.CompletableGithubObject):
         post_parameters = {
             "name": name,
             "color": color,
+            "text_color": text_color,
         }
         if description is not github.GithubObject.NotSet:
             post_parameters["description"] = description

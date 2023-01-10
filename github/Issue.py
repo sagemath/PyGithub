@@ -400,6 +400,9 @@ class Issue(github.GithubObject.CompletableGithubObject):
             post_parameters["milestone_number"] = milestone.number
         if isinstance(label, github.Label.Label):
             post_parameters["label"] = label.url
+            post_parameters["label_name"] = label.name
+            post_parameters["label_color"] = label.color
+            post_parameters["label_text_color"] = label.text_color
         elif label is not github.GithubObject.NotSet:
             post_parameters["label"] = label
         for key, value in kwds.items():

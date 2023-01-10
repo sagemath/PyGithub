@@ -53,6 +53,14 @@ class Label(github.GithubObject.CompletableGithubObject):
         return self._color.value
 
     @property
+    def text_color(self):
+        """
+        :type: string
+        """
+        self._completeIfNotSet(self._text_color)
+        return self._text_color.value
+
+    @property
     def description(self):
         """
         :type: string
@@ -123,6 +131,8 @@ class Label(github.GithubObject.CompletableGithubObject):
     def _useAttributes(self, attributes):
         if "color" in attributes:  # pragma no branch
             self._color = self._makeStringAttribute(attributes["color"])
+        if "text_color" in attributes:  # pragma no branch
+            self._text_color = self._makeStringAttribute(attributes["text_color"])
         if "description" in attributes:  # pragma no branch
             self._description = self._makeStringAttribute(attributes["description"])
         if "name" in attributes:  # pragma no branch
