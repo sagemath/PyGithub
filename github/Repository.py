@@ -945,6 +945,31 @@ class Repository(github.GithubObject.CompletableGithubObject):
         )
         return github.Autolink.Autolink(self._requester, headers, data, completed=True)
 
+    def create_repository_file(
+        self,
+        file_name,
+        file_content_type,
+        file_url,
+        user=github.GithubObject.NotSet,
+        created_at=github.GithubObject.NotSet,
+    ):
+        post_parameters = {
+            "file_name": file_name,
+            "file_content_type": file_content_type,
+            "file_url": file_url,
+        }
+        if user is not github.GithubObject.NotSet:
+            post_parameters["user"] = user
+        if created_at is not github.GithubObject.NotSet:
+            post_parameters["created_at"] = created_at.strftime("%Y-%m-%dT%H:%M:%SZ")
+        headers, data = self._requester.requestJsonAndCheck(
+            "POST", f"{self.url}/files", input=post_parameters
+        )
+        from github.RepositoryFile import RepositoryFile
+        return RepositoryFile(
+            self._requester, headers, data, completed=True
+        )
+
     def create_git_blob(self, content, encoding):
         """
         :calls: `POST /repos/{owner}/{repo}/git/blobs <https://docs.github.com/en/rest/reference/git#blobs>`_
