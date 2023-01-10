@@ -396,9 +396,10 @@ class Issue(github.GithubObject.CompletableGithubObject):
         if created_at is not github.GithubObject.NotSet:
             post_parameters["created_at"] = created_at.strftime("%Y-%m-%dT%H:%M:%SZ")
         if isinstance(milestone, github.Milestone.Milestone):
-            post_parameters["milestone"] = milestone.title
+            post_parameters["milestone_title"] = milestone.title
+            post_parameters["milestone_number"] = milestone.number
         if isinstance(label, github.Label.Label):
-            post_parameters["label"] = label.name
+            post_parameters["label"] = label.url
         elif label is not github.GithubObject.NotSet:
             post_parameters["label"] = label
         for key, value in kwds.items():
