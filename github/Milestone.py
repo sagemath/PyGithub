@@ -47,6 +47,14 @@ class Milestone(github.GithubObject.CompletableGithubObject):
         )
 
     @property
+    def closed_at(self):
+        """
+        :type: datetime.datetime
+        """
+        self._completeIfNotSet(self._closed_at)
+        return self._closed_at.value
+
+    @property
     def closed_issues(self):
         """
         :type: integer
@@ -209,6 +217,7 @@ class Milestone(github.GithubObject.CompletableGithubObject):
         return self.url
 
     def _initAttributes(self):
+        self._closed_at = github.GithubObject.NotSet
         self._closed_issues = github.GithubObject.NotSet
         self._created_at = github.GithubObject.NotSet
         self._creator = github.GithubObject.NotSet
@@ -224,6 +233,8 @@ class Milestone(github.GithubObject.CompletableGithubObject):
         self._url = github.GithubObject.NotSet
 
     def _useAttributes(self, attributes):
+        if "closed_at" in attributes:  # pragma no branch
+            self._closed_at = self._makeDatetimeAttribute(attributes["closed_at"])
         if "closed_issues" in attributes:  # pragma no branch
             self._closed_issues = self._makeIntAttribute(attributes["closed_issues"])
         if "created_at" in attributes:  # pragma no branch

@@ -1373,6 +1373,9 @@ class Repository(github.GithubObject.CompletableGithubObject):
         description=github.GithubObject.NotSet,
         due_on=github.GithubObject.NotSet,
         user=github.GithubObject.NotSet,
+        created_at=github.GithubObject.NotSet,
+        updated_at=github.GithubObject.NotSet,
+        closed_at=github.GithubObject.NotSet,
     ):
         """
         :calls: `POST /repos/{owner}/{repo}/milestones <https://docs.github.com/en/rest/reference/issues#milestones>`_
@@ -1402,6 +1405,21 @@ class Repository(github.GithubObject.CompletableGithubObject):
                 post_parameters["due_on"] = due_on.strftime("%Y-%m-%dT%H:%M:%SZ")
             else:
                 post_parameters["due_on"] = due_on.isoformat()
+        if created_at is not github.GithubObject.NotSet:
+            if isinstance(created_at, datetime.date):
+                post_parameters["created_at"] = created_at.strftime("%Y-%m-%dT%H:%M:%SZ")
+            else:
+                post_parameters["created_at"] = created_at.isoformat()
+        if updated_at is not github.GithubObject.NotSet:
+            if isinstance(updated_at, datetime.date):
+                post_parameters["updated_at"] = updated_at.strftime("%Y-%m-%dT%H:%M:%SZ")
+            else:
+                post_parameters["updated_at"] = updated_at.isoformat()
+        if closed_at is not github.GithubObject.NotSet:
+            if isinstance(closed_at, datetime.date):
+                post_parameters["closed_at"] = closed_at.strftime("%Y-%m-%dT%H:%M:%SZ")
+            else:
+                post_parameters["closed_at"] = closed_at.isoformat()
         if user is not github.GithubObject.NotSet:
             post_parameters["user"] = user
         headers, data = self._requester.requestJsonAndCheck(
